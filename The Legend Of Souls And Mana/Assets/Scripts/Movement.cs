@@ -77,7 +77,7 @@ public class Movement : MonoBehaviour {
 				runTimer = 0.0f;
 			}
 
-			if (Input.GetButtonDown ("Fire2")) {
+			if (Input.GetButtonDown ("Fire2") && runTimer == 0.0f) {
 				isRolling = true;
 				rollDirection = direction;
 			}
