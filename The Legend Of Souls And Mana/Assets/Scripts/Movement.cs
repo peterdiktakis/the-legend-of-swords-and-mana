@@ -3,12 +3,16 @@ using System.Collections;
 
 public class Movement : MonoBehaviour {
 
-	Vector3 move;
-	public float speed = 5.0f;
-	float timer;
+	//Character variables
+
 	public float timeToRun = 0.5f;
 	public float rollSpeedModifier = 10.2f;
+	public float speed = 5.0f;
+
+	Vector3 move;
 	Vector3 direction;
+	
+	float timer;
 	bool isRolling;
 
 	// Use this for initialization
