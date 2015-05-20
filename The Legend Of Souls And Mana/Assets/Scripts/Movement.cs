@@ -15,16 +15,48 @@ public class Movement : MonoBehaviour {
 	void Start () {
 		timer = 0.0f;
 		isRolling = false;
-
+		direction = new Vector3 (0.0f, 0.0f, 0.0f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		print (transform.position);
+		print (direction);
 		move = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0);
 		if (!isRolling) {
 			transform.position += move * speed * Time.deltaTime;
+
+			if(Input.GetAxis ("Horizontal") == 0 && Input.GetAxis ("Vertical") == 0)
+				direction = new Vector3(0.0f, 0.0f, 0.0f);
+
+			if(Input.GetAxis ("Horizontal") > 0)
+			{
+				direction = new Vector3(1.0f, 0.0f, 0.0f);
+			}
+			else if(Input.GetAxis ("Horizontal") < 0){
+				direction = new Vector3(-1.0f, 0.0f, 0.0f);
+			}
+			if(Input.GetAxis ("Vertical") > 0)
+			{
+				direction = new Vector3(0.0f, 1.0f, 0.0f);
+			}
+			else if(Input.GetAxis ("Vertical") < 0){
+				direction = new Vector3(0.0f, -1.0f, 0.0f);
+			}
+
+			if(Input.GetAxis ("Horizontal") > 0 && Input.GetAxis ("Vertical") > 0){
+				direction = new Vector3(1.0f, 1.0f, 0.0f);
+			}
+			else if(Input.GetAxis ("Horizontal") > 0 && Input.GetAxis ("Vertical") < 0){
+				direction = new Vector3(1.0f, -1.0f, 0.0f);
+			}
+			else if(Input.GetAxis ("Horizontal") < 0 && Input.GetAxis ("Vertical") > 0){
+				direction = new Vector3(-1.0f, 1.0f, 0.0f);
+			}
+			else if(Input.GetAxis ("Horizontal") < 0 && Input.GetAxis ("Vertical") < 0){
+				direction = new Vector3(-1.0f, -1.0f, 0.0f);
+			}
+
 
 
 			if (Input.GetButton ("Fire1")) {
@@ -40,10 +72,9 @@ public class Movement : MonoBehaviour {
 
 			if (Input.GetButtonDown ("Fire2")) {
 				isRolling = true;
-				direction = move;
 			}
 		} else {
-			transform.position += direction;
+			//transform.position += direction;
 		}
 
 
