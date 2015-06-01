@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour {
 	public float timeToRoll = 0.2f;
 	public float rollSpeedModifier = 0.05f;
 	public float speed = 5.0f;
+	public int rollStamina = 5;
 
 	Vector3 move;
 	Vector3 direction;
@@ -18,18 +19,21 @@ public class Movement : MonoBehaviour {
 	float rollTimer;
 	bool isRolling;
 
+	PlayerGUI stamina;
+
 	// Use this for initialization
 	void Start () {
 		runTimer = 0.0f;
 		rollTimer = 0.0f;
 		isRolling = false;
 		direction = new Vector3 (0.0f, 0.0f, 0.0f);
+		stamina = GetComponent<PlayerGUI> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		print (isRolling + "      "  + rollTimer);
+		//print (isRolling + "      "  + rollTimer);
 		move = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0);
 		if (!isRolling) {
 			rollTimer = 0.0f;
@@ -77,9 +81,13 @@ public class Movement : MonoBehaviour {
 				runTimer = 0.0f;
 			}
 
-			if (Input.GetButtonDown ("Fire2") && runTimer == 0.0f) {
+			if (Input.GetButtonDown ("Fire2") && runTimer == 0.0f && stamina.currentStamina > 0) {
+				stamina.currentStamina -= rollStamina;
+				stamina.changed = true;
 				isRolling = true;
 				rollDirection = direction;
+
+
 			}
 		} else {
 			rollTimer += Time.deltaTime;
