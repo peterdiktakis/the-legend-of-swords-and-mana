@@ -18,6 +18,7 @@ public class Movement : MonoBehaviour {
 	float runTimer;
 	float rollTimer;
 	bool isRolling;
+	public bool isRunning;
 
 	PlayerGUI stamina;
 
@@ -26,6 +27,7 @@ public class Movement : MonoBehaviour {
 		runTimer = 0.0f;
 		rollTimer = 0.0f;
 		isRolling = false;
+		isRunning = false;
 		direction = new Vector3 (0.0f, 0.0f, 0.0f);
 		stamina = GetComponent<PlayerGUI> ();
 	}
@@ -33,6 +35,7 @@ public class Movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		print (isRunning);
 		//print (isRolling + "      "  + rollTimer);
 		move = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0);
 		if (!isRolling) {
@@ -70,13 +73,22 @@ public class Movement : MonoBehaviour {
 				direction = new Vector3(-1.0f, -1.0f, 0.0f);
 			}
 
-			if (Input.GetButton ("Fire1")) {
+			if (Input.GetButton ("Fire1") && move.magnitude > 0) {
 				runTimer += Time.deltaTime;
 				if (runTimer > timeToRun) {
+					isRunning = true;
 					speed = 8.0f;
+					stamina.currentStamina -= Time.deltaTime * 25;
 				}
 				
 			} else {
+				speed = 5.0f;
+				runTimer = 0.0f;
+				isRunning = false;
+			}
+		
+			if(stamina.currentStamina <= 0)
+			{
 				speed = 5.0f;
 				runTimer = 0.0f;
 			}
