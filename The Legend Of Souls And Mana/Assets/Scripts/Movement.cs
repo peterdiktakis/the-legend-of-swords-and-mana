@@ -30,12 +30,13 @@ public class Movement : MonoBehaviour {
 		isRunning = false;
 		direction = new Vector3 (0.0f, 0.0f, 0.0f);
 		stamina = GetComponent<PlayerGUI> ();
+		this.GetComponent<Renderer> ().material.color = Color.yellow;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		print (isRunning);
+		print (runTimer);
 		//print (isRolling + "      "  + rollTimer);
 		move = new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0);
 		if (!isRolling) {
@@ -73,7 +74,16 @@ public class Movement : MonoBehaviour {
 				direction = new Vector3(-1.0f, -1.0f, 0.0f);
 			}
 
-			if (Input.GetButton ("Fire1") && move.magnitude > 0) {
+
+			
+			if (Input.GetButtonUp ("Fire2") && stamina.currentStamina > rollStamina && move.magnitude > 0 && !isRunning) {
+				stamina.currentStamina -= rollStamina;
+				stamina.changed = true;
+				isRolling = true;
+				rollDirection = direction;
+			}
+
+			if (Input.GetButton ("Fire2") && move.magnitude > 0) {
 				runTimer += Time.deltaTime;
 				if (runTimer > timeToRun) {
 					isRunning = true;
@@ -81,11 +91,13 @@ public class Movement : MonoBehaviour {
 					stamina.currentStamina -= Time.deltaTime * 25;
 				}
 				
-			} else {
+			} 
+			else {
 				speed = 5.0f;
 				runTimer = 0.0f;
 				isRunning = false;
 			}
+
 		
 			if(stamina.currentStamina <= 0)
 			{
@@ -93,14 +105,8 @@ public class Movement : MonoBehaviour {
 				runTimer = 0.0f;
 			}
 
-			if (Input.GetButtonDown ("Fire2") && runTimer == 0.0f && stamina.currentStamina > 0) {
-				stamina.currentStamina -= rollStamina;
-				stamina.changed = true;
-				isRolling = true;
-				rollDirection = direction;
 
 
-			}
 		} else {
 			rollTimer += Time.deltaTime;
 			//For Diagonal Rolling
