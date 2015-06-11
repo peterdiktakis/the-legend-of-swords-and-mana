@@ -4,16 +4,29 @@ using System.Collections;
 
 public class PlayerGUI : MonoBehaviour {
 
-	//Stamina
-	public float startingStamina;
-	public float currentStamina;
-	public Slider staminaSlider;
-	float staminaTimer;
-	public bool changed = false;
-	public bool hasChanged = false;
-	Movement running;
+	//****************Stamina****************//
+		//Variables
+		public float startingStamina;
+		public float currentStamina;
 
-	//Health
+		//Slider 
+		public Slider staminaSlider;
+
+		//Timer
+		float staminaTimer;
+
+		//Checks
+		public bool changed = false;
+		public bool hasChanged = false;
+
+		//Movement
+		Movement running;
+
+		// Timer/Stamina Modifiers
+		const float STAMINA_MODIFIER = 60f;
+		const float TIMER_CHECK = 1.0f;
+
+	//****************Health****************//
 
 	void Awake()
 	{
@@ -30,7 +43,6 @@ public class PlayerGUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		print (staminaTimer);
 
 		staminaSlider.value = currentStamina;
 		if (currentStamina > startingStamina)
@@ -42,11 +54,13 @@ public class PlayerGUI : MonoBehaviour {
 			staminaTimer = 0.0f;
 			changed = false;
 		}
+
+		//Rolling
 		if (currentStamina != startingStamina && changed == false && running.isRunning != true) {
 			staminaTimer += Time.deltaTime;
 
-			if (staminaTimer > 1.0f)
-				currentStamina += 60f * Time.deltaTime;
+			if (staminaTimer > TIMER_CHECK)
+				currentStamina += STAMINA_MODIFIER * Time.deltaTime;
 
 
 		} else if (currentStamina <= 0)
